@@ -1,39 +1,33 @@
 import axios from "axios";
 import { styled } from "nativewind";
 import { useEffect, useState } from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import { FlatList, Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import CheckBox from 'expo-checkbox';
+import { round } from 'lodash';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
 const StyledImage = styled(Image);
-
-const Separator = () => (
-    <View style={styles.separator} />
-);
+const StyledScrollView = styled(ScrollView);
 
 export default function CoinList(){
     
     const [data, setData] = useState([]);
     const [toggleCheckBox, setToggleCheckBox] = useState(false);
+    const [coinsArray, setcoinsArray] = useState([]);
+
+    async function getData() {
+        const { data } = await axios.get('https://cypherd-production.up.railway.app/covalent/balance/ethereum')
+        console.log("🚀 ~ file: coin-list.tsx:18 ~ getData ~ data", data)
+        setcoinsArray(data.balances)
+
+
+    }
 
     useEffect(() => {
-        const getData = async () => {
-            axios({
-                method: 'get',
-                url: `http://127.0.0.1:3000/covalent/balance/ethereum`,
-              }).then((response) => {
-                console.log(response.data);
-              });        }
-        try {
-            void getData();
-        }
-        catch(error){
-            console.log(error);
-        }
+        void getData();
+       
     }, [])
-
-    const coinsArray = ["", "", ""];
     
     return ( 
         
@@ -72,41 +66,32 @@ export default function CoinList(){
                 </FlatList> */}
             </StyledView>
 
-
-            {/* {
+            <StyledScrollView className="h-[60vh]">
+            {
                 coinsArray.map(item => (
-                    <StyledView key={item.name} className="flex w-full flex-row justify-between">
+                    <StyledView key={item.name} className="flex w-full p-4  flex-row justify-between">
          
                     <StyledView className="flex flex-row gap-3 align-middle">
                         <StyledView>
-                            <StyledImage source={{uri:"https://imgs.search.brave.com/ctaac7Upc_Hl955_3i26IYYz2ZQjOJHhONBqFpduYiY/rs:fit:980:980:1/g:ce/aHR0cDovL2Nkbi5v/bmxpbmV3ZWJmb250/cy5jb20vc3ZnL2lt/Z18yMzQ5NTcucG5n"}}
+                            <StyledImage source={{uri: item.logo_url }}
                             className="w-10 h-10 p-1"/>
                         </StyledView>
                         <StyledView className="flex flex-col">
-                            <StyledText>item.name</StyledText>
-                            <StyledText>item.ticker</StyledText>
+                            <StyledText>{item.name}</StyledText>
+                            <StyledText>{item.ticker}</StyledText>
                         </StyledView>
                     </StyledView>
              
                     <StyledView className="flex flex-col">
-                        <StyledText className="text-md">item.holding</StyledText>
-                        <StyledText className="text-xs text-right">item.balance</StyledText>
+                        <StyledText className="text-md">{item.holding}</StyledText>
+                        <StyledText className="text-xs text-right">{round(parseFloat(item.balance), 6)}</StyledText>
                     </StyledView>
-    
-                    <Separator/>
                     </StyledView>
-
                 ))
-            }                 */}
+            }              
+            </StyledScrollView>
         </StyledView>
 
     );
 };
 
-const styles = StyleSheet.create({
-    separator: {
-      marginVertical: 8,
-      borderBottomColor: '#737373',
-      borderBottomWidth: StyleSheet.hairlineWidth,
-    },
-});

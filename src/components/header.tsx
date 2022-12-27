@@ -5,7 +5,7 @@ const StyledView = styled(View);
 const StyledText = styled(Text);
 const StyledTouchView = styled(TouchableOpacity);
 
-const image = { uri: "https://imgs.search.brave.com/wEHx4L0ISIyHfXUn4M9TTOtv0ME58xFEz_hgy2D_yos/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvcHJl/dmlld3MvMDAwLzU5/My8xNjkvb3JpZ2lu/YWwvdmVjdG9yLXdh/bGxldC1pY29uLmpw/Zw" }
+// const image = { uri: "https://imgs.search.brave.com/wEHx4L0ISIyHfXUn4M9TTOtv0ME58xFEz_hgy2D_yos/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvcHJl/dmlld3MvMDAwLzU5/My8xNjkvb3JpZ2lu/YWwvdmVjdG9yLXdh/bGxldC1pY29uLmpw/Zw" }
 
 export default function Header() {
     return (
