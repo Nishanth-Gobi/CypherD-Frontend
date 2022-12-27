@@ -1,9 +1,10 @@
 import axios from "axios";
 import { styled } from "nativewind";
 import { useEffect, useState } from "react";
-import { FlatList, Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, ScrollView, Text, View } from "react-native";
 import CheckBox from 'expo-checkbox';
 import { round } from 'lodash';
+// import ApiData, { coinsArray, lastUpdated } from "../../api";
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -12,21 +13,20 @@ const StyledScrollView = styled(ScrollView);
 
 export default function CoinList(){
     
-    const [data, setData] = useState([]);
     const [toggleCheckBox, setToggleCheckBox] = useState(false);
-    const [coinsArray, setcoinsArray] = useState([]);
+    const [coinsArray, setcoinsArray] = useState<any[]>([]);
+    const [lastUpdated, setUpdatedAt] = useState();
 
     async function getData() {
         const { data } = await axios.get('https://cypherd-production.up.railway.app/covalent/balance/ethereum')
-        console.log("🚀 ~ file: coin-list.tsx:18 ~ getData ~ data", data)
-        setcoinsArray(data.balances)
-
-
+        // console.log("🚀 ~ file: coin-list.tsx:18 ~ getData ~ data", data)
+        setcoinsArray(data.balances);
+        setUpdatedAt(data.updated_at);
     }
 
     useEffect(() => {
+        
         void getData();
-       
     }, [])
     
     return ( 
@@ -37,7 +37,7 @@ export default function CoinList(){
             <StyledView className="flex flex-row border-t-[1px] border-b-[1px] border-slate-300 justify-between p-3">
                 <StyledView className="flex">
                     <StyledText className="text-xs">
-                     Last Updated: 4 Mins ago
+                     Last Updated: {lastUpdated} Mins ago
                     </StyledText>
                 </StyledView>
                 <StyledView className="flex flex-row align-middle space-x-1">
@@ -57,19 +57,11 @@ export default function CoinList(){
                 </StyledView>
             </StyledView>
 
-            {/* coins list */}
-            <StyledView className="divide-y">
-                {/* <FlatList
-                    data = {}
-                    renderItem={}>
-
-                </FlatList> */}
-            </StyledView>
-
-            <StyledScrollView className="h-[60vh]">
+            {/* List */}
+            <StyledScrollView className="h-[60vh] divide-y-[1px] divide-slate-200">
             {
                 coinsArray.map(item => (
-                    <StyledView key={item.name} className="flex w-full p-4  flex-row justify-between">
+                    <StyledView key={ item.name.concat(item.ticker) } className="flex w-full py-5 px-4 flex-row justify-between">
          
                     <StyledView className="flex flex-row gap-3 align-middle">
                         <StyledView>
@@ -77,14 +69,14 @@ export default function CoinList(){
                             className="w-10 h-10 p-1"/>
                         </StyledView>
                         <StyledView className="flex flex-col">
-                            <StyledText>{item.name}</StyledText>
-                            <StyledText>{item.ticker}</StyledText>
+                            <StyledText className="text-lg text-gray-600 font-bold">{item.name}</StyledText>
+                            <StyledText className="text-gray-600">{item.ticker}</StyledText>
                         </StyledView>
                     </StyledView>
              
                     <StyledView className="flex flex-col">
-                        <StyledText className="text-md">{item.holding}</StyledText>
-                        <StyledText className="text-xs text-right">{round(parseFloat(item.balance), 6)}</StyledText>
+                        <StyledText className="text-lg font-bold text-gray-600 text-right">${item.holding}</StyledText>
+                        <StyledText className="text-xs text-gray-600 text-right">{round(parseFloat(item.balance), 6)}</StyledText>
                     </StyledView>
                     </StyledView>
                 ))
