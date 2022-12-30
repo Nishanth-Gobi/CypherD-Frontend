@@ -18,7 +18,7 @@ export default function CoinList(){
     const [lastUpdated, setUpdatedAt] = useState();
 
     async function getData() {
-        const { data } = await axios.get('https://cypherd-production.up.railway.app/covalent/balance/ethereum')
+        const { data } = await axios.get('https://cypherd-production.up.railway.app/covalent/balance/0x6AE65a7033a84bb36778fEA6607A25a0d6c8EE50/ethereum')
         // console.log("🚀 ~ file: coin-list.tsx:18 ~ getData ~ data", data)
         setcoinsArray(data.balances);
         setUpdatedAt(data.updated_at);
