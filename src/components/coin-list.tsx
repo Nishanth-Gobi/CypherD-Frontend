@@ -7,8 +7,6 @@ import { round } from 'lodash';
 import { DataContext } from "../pages/home";
 // import {BASE_URL} from '@env';
 
-export let totalBalance = 0;
-
 // Configs 
 const UNVERIFIED_LOGO_URL = "https://cdn-icons-png.flaticon.com/512/9297/9297293.png";
 const BASE_URL = "https://cypherd-production.up.railway.app/covalent/balance/"
@@ -35,9 +33,7 @@ export default function CoinList(){
             const { data } = await axios.get(BASE_URL + WALLET_ADDRESS);    
             setCoinsArray(data.balances);
             setUpdatedAt(data.updated_at);
-            console.log("setting profile data ", data.total_balance);
             profileContext.setProfileData({...data});
-            totalBalance = data.total_balance;
         }
         catch (error) {
             console.log('Error in retreiving data from the API endpoint');
@@ -73,6 +69,7 @@ export default function CoinList(){
                         value={toggleCheckBox}
                         onValueChange={(newValue) => setToggleCheckBox(newValue)}
                         color={"black"}
+                        style={{ width:15, height:15 }}
                         />
                      </StyledView>
                     <StyledView className="align-middle h-full">
@@ -86,11 +83,11 @@ export default function CoinList(){
             {/* List */}
             <StyledScrollView className="h-[60vh]">
             {
-                coinsArray.map(item => (
-                    <>
+                coinsArray.map((item, index) => (
+                    <StyledView key={ item.name.concat(index) }>
                     {(item.is_verified && toggleCheckBox || !toggleCheckBox)
                     &&
-                    <StyledView key={ item.name.concat(item.ticker) } className="flex w-full py-5 px-4 flex-row justify-between border-b-[1px] border-slate-200">
+                    <StyledView className="flex w-full py-5 px-4 flex-row justify-between border-b-[1px] border-slate-200">
                     <><StyledView className="flex flex-row gap-3 align-middle">
                                 <StyledView>
                                     <StyledImage source={{ uri: item.is_verified ? item.logo_url : UNVERIFIED_LOGO_URL }}
@@ -106,7 +103,7 @@ export default function CoinList(){
                                 </StyledView></>
                     </StyledView>
 }
-                    </>
+                    </StyledView>
                 ))
             }              
             </StyledScrollView>

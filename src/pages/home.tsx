@@ -17,7 +17,6 @@ export default function Home(){
 
     const [profileData, setProfileData] = useState({});
 
-
     return (
         <DataContext.Provider value={{profileData, setProfileData}}>
         <StyledView className="w-full h-full">
