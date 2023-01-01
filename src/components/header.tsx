@@ -1,7 +1,8 @@
 import { round } from "lodash";
 import { styled } from "nativewind";
+import { useContext } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { totalBalance } from "./coin-list";
+import { DataContext } from "../pages/home";
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -9,6 +10,9 @@ const StyledTouchView = styled(TouchableOpacity);
 
 
 export default function Header() {
+    
+    const profileContext = useContext<any>(DataContext);
+    
     return (
         <StyledView className="flex flex-col p-4 w-full ">
             <StyledView className="flex flex-col">
@@ -26,7 +30,7 @@ export default function Header() {
         
             <StyledView>
                 <StyledText className="text-2xl font-bold">
-                    {round(totalBalance, 2)}
+                    {round(profileContext.profileData.total_balance, 2)}
                 </StyledText>
             </StyledView>
             <StyledView className="pt-5">

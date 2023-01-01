@@ -1,12 +1,13 @@
 import axios from "axios";
 import { styled } from "nativewind";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import CheckBox from 'expo-checkbox';
 import { round } from 'lodash';
+import { DataContext } from "../pages/home";
 // import {BASE_URL} from '@env';
 
-export var totalBalance = 0;
+export let totalBalance = 0;
 
 // Configs 
 const UNVERIFIED_LOGO_URL = "https://cdn-icons-png.flaticon.com/512/9297/9297293.png";
@@ -25,12 +26,17 @@ export default function CoinList(){
     const [toggleCheckBox, setToggleCheckBox] = useState(false);
     const [coinsArray, setCoinsArray] = useState<any[]>([]);
 
+    const profileContext = useContext<any>(DataContext);
+
+
     async function getData() {
 
         try {
             const { data } = await axios.get(BASE_URL + WALLET_ADDRESS);    
             setCoinsArray(data.balances);
             setUpdatedAt(data.updated_at);
+            console.log("setting profile data ", data.total_balance);
+            profileContext.setProfileData({...data});
             totalBalance = data.total_balance;
         }
         catch (error) {
