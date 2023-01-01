@@ -1,5 +1,7 @@
+import { round } from "lodash";
 import { styled } from "nativewind";
 import { View, Text, TouchableOpacity } from "react-native";
+import { totalBalance } from "./coin-list";
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -24,7 +26,7 @@ export default function Header() {
         
             <StyledView>
                 <StyledText className="text-2xl font-bold">
-                    $89.87
+                    {round(totalBalance, 2)}
                 </StyledText>
             </StyledView>
             <StyledView className="pt-5">

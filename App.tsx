@@ -1,12 +1,10 @@
 import { View, SafeAreaView } from "react-native";
 import { styled } from "nativewind";
 import Home from "./src/pages/home";
-// import ApiData from "./api";
+
 
 const StyledView = styled(View);
 function App(){
-
-  // ApiData();
 
   return (
     <SafeAreaView>
